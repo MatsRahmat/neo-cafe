@@ -4,6 +4,16 @@ if (isset($_SESSION["username"]) && isset($_SESSION["userId"])) {
     header("Location:index.php");
     exit();
 }
+require_once "../functions/enums.php";
+
+
+if (isset($_GET["action"])) {
+    $action = $_GET["action"];
+}
+if (isset($_GET["status"])) {
+    $status = $_GET["status"];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -13,8 +23,8 @@ if (isset($_SESSION["username"]) && isset($_SESSION["userId"])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neo Cafe | Log in</title>
-    <link rel="stylesheet" href="./dist/css/root.css" />
-    <?php require_once "./layouts/admin-head-link.php" ?>
+    <link rel="stylesheet" href="../dist/css/root.css" />
+    <?php require_once "../layouts/admin-head-link.php" ?>
 
 </head>
 
@@ -23,11 +33,17 @@ if (isset($_SESSION["username"]) && isset($_SESSION["userId"])) {
         <div class="card card-outline card-primary">
             <div class="login-logo">
                 <span class="header-text text-medium"><b>Neo</b> Cafe</span>
+                <p class="sanitize">
+                    <span class="header-text text-medium"><b>Admin panel</b></span>
+                </p>
             </div>
             <div class="card">
                 <div class="card-body login-card-body">
                     <p class="login-box-msg">Login to continue</p>
-                    <form action="../functions/action-form.php?action=login" method="post" name="form" id="form">
+                    <?php if (isset($action) && isset($status)) : ?>
+                        <p class="text-center m-0 p-0 text-danger mb-3">invalid password or email</p>
+                    <?php endif ?>
+                    <form action="../functions/admin_action_form.php?action=login" method="post" name="form" id="form">
                         <div class="input-group mb-3">
                             <input type="email" class="form-control" placeholder="Email" name="email" id="email" required>
                             <div class="input-group-append">
@@ -51,31 +67,24 @@ if (isset($_SESSION["username"]) && isset($_SESSION["userId"])) {
                         </div>
                         <div class="row">
                             <!-- /.col -->
-                            <div class="col-1"></div>
+                            <div class="col-4"></div>
                             <div class="col-4">
                                 <button id="submit-btn" class="btn btn-primary btn-block" name="btn-submit" value="sign-in">Sign In</button>
                             </div>
-                            <div class="col-6">
-                                <button id="guest" class="btn btn-outline-primary btn-block" name="btn-submit" value="guest">Login as Guest</button>
-                            </div>
-                            <div class="col-1"></div>
+                            <div class="col-4"></div>
                             <!-- /.col -->
                         </div>
                     </form>
-                    <div class="mb-1 mt-2">
-                        <p class="mb-0"> don't have account ?
-                            <a href="register.php" class="text-center">Register</a>
-                        </p>
-                    </div>
                 </div>
                 <!-- /.login-card-body -->
             </div>
         </div>
     </div>
     <!-- /.login-box -->
-    <?php require_once "./layouts/admin-body-scripts.php" ?>
+    <?php require_once "../layouts/admin-body-scripts.php" ?>
 
     <script src="./plugins/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="../plugins/toastr/toastr.min.js"></script>
     <script>
         $(document).ready(function() {
             $("#submit-btn").click(function(btnEven) {
@@ -101,6 +110,22 @@ if (isset($_SESSION["username"]) && isset($_SESSION["userId"])) {
             //     console.log("change", e.target.value, e.target.type);
             // })
         });
+    </script>
+
+    <script>
+        toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.');
+        // $('.toastrDefaultSuccess').click(function() {
+        //     toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.');
+        // });
+        // $('.toastrDefaultInfo').click(function() {
+        //     toastr.info('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+        // });
+        // $('.toastrDefaultError').click(function() {
+        //     toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+        // });
+        // $('.toastrDefaultWarning').click(function() {
+        //     toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+        // });
     </script>
 </body>
 
